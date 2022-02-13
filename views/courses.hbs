@@ -13,17 +13,22 @@
                         <p class="price">{{price}}</p>
                     </div>
                     <div class="card-action actions">
-                        <a href="/courses/{{id}}" target="_blank">Открыть</a>
-                        <a href="/courses/{{id}}/edit?allow=true">Редактировать</a>
-                        <form action="/card/add" method="post">
-                            <input type="hidden" name="id" value="{{id}}">
-                            <button class="btn btn-primary">Купить</button>
-                        </form>
+                        <a href="/courses/{{id}}" target="_blank">Открыть курс</a>
+                        {{#if @root.isAuth}}
+                            {{#ifeq userId._id @root.userId}}
+                                <a href="/courses/{{id}}/edit?allow=true">Редактировать</a>
+                            {{/ifeq}}
+                            <form action="/card/add" method="POST">
+                                <input type="hidden" name="id" value="{{id}}">
+                                <input type="hidden" name="_csrf" value="{{@root.csrf}}">
+                                <button type="submit" class="btn btn-primary">Купить</button>
+                            </form>
+                        {{/if}}
                     </div>
                 </div>
             </div>
         </div>
     {{/each}}
 {{else}}
-<p>Курсов пока нет</p>
+    <p>Курсов пока нет</p>
 {{/if}}
